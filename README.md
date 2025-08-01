@@ -4,7 +4,7 @@
 
 ## Purpose
 
-The Conversation Evaluation project uses Large Language Models (LLMs) as a judge to evaluate conversational agents. This helps to reduce the manual effort required for evaluation.
+The Conversation Evaluation project uses Large Language Models (LLMs) as a judge to evaluate conversational agents using user simulation. This helps to reduce the manual effort required for evaluation.
 
 <img width="524" height="250" alt="image" src="https://github.com/user-attachments/assets/266cab39-78af-4923-9fab-5de269f03443" />
 
