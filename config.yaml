@@ -1,0 +1,97 @@
+# Dataset Configuration
+dataset_name: "Bajaj Insurance Renewal Dataset"
+description: "Test cases for Bajaj bike insurance renewal conversations"
+version: "1.0"
+created_by: "QA Team"
+created_date: "2024-12-15"
+
+# Test Cases
+unit_tests:
+  - conv_id: "conv_001"
+    user_goal: ""
+    user_profile: "Rahul Verma"  # Options: "Rahul Verma", "Anita Desai", "Neha Sharma", "Riya Sharma", "Arjun Nair"
+    
+    # Gold conversation (expected ideal conversation)
+    gold_conversation:
+      - role: "assistant"
+        content: "मैं काव्य बोल रही हूँ, Bajaj Finserve से on recorded line, क्या मेरी बात रजनीश से हो रही हैं?"
+      - role: "user"
+        content: "हाँ"
+      - role: "assistant"
+        content: "यह call आपके pending E-M-I payment के regarding हैं, जिसके आखिरी चार digits हैं पाँच चार तीन दो, और इसकी due date थी पंद्रह september। क्या आप अभी payment कर सकते हैं?"
+      - role: "user"
+        content: "मैंने पेमेंट कर दिया था।"
+      - role: "assistant"
+        content: "अच्छा। क्या आप payment कि transaction ID share कर सकते हैं? <action>cancel_reengagement</action>"
+      - role: "user"
+        content: "एक मिनट इंतज़ार करो"
+      - role: "assistant"
+        content: "ठीक है मैं wait करती हूँ <entities>delay=60</entities>"
+      - role: "user"
+        content: "हाँ, ट्रांसैक्शन आई डी है एक दो तीन चार पाँच छह।"
+      - role: "assistant"
+        content: "समझ गयी, धन्यवाद! क्या आप payment का exact amount share कर सकते है? <action>cancel_reengagement</action>"
+      - role: "user"
+        content: "हाँ, अमाउंट दस हजार पाँच सौ।"
+      - role: "assistant"
+        content: "Confirm करने के लिए धन्यवाद। क्या आप payment का date और time share कर सकते है? <action>cancel_reengagement</action>"
+      - role: "user"
+        content: "डेट थी बीस सितम्बर और टाइम थी दोपहर एक बजे।"
+      - role: "assistant"
+        content: "Details share करने के लिए धन्यवाद। आपने payment कोनसे method या App से किया था? <action>cancel_reengagement</action>"
+      - role: "user"
+        content: "मैंने गूगल पे से किया था।"
+      - role: "assistant"
+        content: "ठीक है, मैंने details note कर ली है। क्या आपको कोई ओर मदद चाहिए?"
+      - role: "user"
+        content: "हाँ, मुझे ₹295 चार्ज के बारे में जानना है।"
+      - role: "assistant"
+        content: "यह ECS bounce charge है जो bank ने auto-debit किया है।"
+      - role: "user"
+        content: "एन ऐ सी एच मैंडेट अपडेट के लिए क्या करना होगा?"
+      - role: "assistant"
+        content: "अपने submission का SRN प्रदान करें। Processing में 45 दिन तक लग सकते हैं।"
+      - role: "user"
+        content: "ठीक है, और कोई जानकारी नहीं चाहिए।"
+      - role: "assistant"
+        content: "चलिए मैं हमारा discussion summarize करती हूँ: आपने बताया कि आपने payment किया है, transaction ID एक दो तीन चार पाँच छह के साथ, amount दस हजार पाँच सौ, date बीस september और time दोपहर एक बजे, Google Pay से। धन्यवाद, आपका दिन शुभ हो! <action>call_end</action>"
+    
+    # Evaluation metrics for this test case
+    metrics:
+      - name: "Task Completeness"
+        definition: "Check if in the following conversation the agent has asked the following information: 1. Agent has asked reason for not doing the payment 2. Agent has persuaded user 2 times to do the payment 3. Asked for Transaction ID 4. Asked for Amount 5. Mode of payment 6. ended the call with <action>call_end</action>"
+        scoring_criteria: "Return 0 if failed the test, 1 if passed."
+      
+
+
+# Configuration for Conversation Simulation
+# Agent Configuration
+agent_name: 'Bajaj Agent'
+user_agent_name: 'User'
+judge_agent_name: 'Judge'
+
+# Agent Provider Configuration: 'openai', 'google', 'together', 'ollama', 'vllm', 'huggingface'
+user_provider: 'openai'
+assistant_provider: 'openai'
+judge_provider: 'openai'
+
+# Model Configuration
+user_agent_model: 'gpt-4.1'
+assistant_agent_model: 'gpt-4o'
+judge_agent_model: 'gpt-4.1'
+
+# Prompt Configuration
+assistant_prompt: 'bajaj_prompt'  # Path to prompt file
+
+# Simulation Configuration
+conversation_history:  # Initial Conversation History
+  - role: 'assistant'
+    content: 'हेलो मैं काव्य बोल रही हूँ क्या मेरी बात रजनीश से हो रही है'
+
+endswith: '<action>call_end</action>'
+evaluate_with_user_simulation: false
+using_gold_conversation: false
+
+evaluate_with_gold_conversation: false
+max_turns: 30  # Needed when simulating with user simulation
+verbose: false  # Enable verbose output during processing
